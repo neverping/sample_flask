@@ -5,7 +5,9 @@ project_user: vagrant
 
 # Flask
 virtualenv_directory: "{{ project_home_directory }}/virtualenv"
+flask_default_port: 5000
 
 # Nginx
 nginx_directory: "{{ project_home_directory }}/nginx"
-nginx_pid_file: "/var/run/nginx_ducks.pid"
+nginx_pid_file: /run/nginx.pid
+nginx_log_dir: /var/log/nginx

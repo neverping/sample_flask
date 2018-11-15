@@ -1,6 +1,6 @@
 worker_processes auto;
 
-error_log /tmp/nginx_polls_error.log;
+error_log {{ nginx_log_dir }}/error.log;
 pid       {{ nginx_pid_file }};
 
 {% if ansible_distribution == "Ubuntu" %}
@@ -9,12 +9,10 @@ user www-data;
 user nobody;
 {% endif %}
 
-
 events {
     worker_connections 8;
     use epoll;
 }
-
 
 http {
     include /etc/nginx/mime.types;
@@ -36,19 +34,15 @@ http {
       'Fwd:\t${http_x_forwarded_for}'
     ;
 
-    access_log /tmp/nginx_polls_access.log main;
-    error_log /tmp/nginx_polls_error.log;
-
+    access_log {{ nginx_log_dir }}/access.log main;
+    error_log {{ nginx_log_dir }}/error.log;
 
     sendfile      on;
     server_tokens off;
     etag          off;
 
-
     tcp_nopush  on;
     tcp_nodelay on;
-
-    # Gzip não pode estar ativado no BE para não servir conteúdo gzipado ao SSI do FE
 
     gzip              on;
     gzip_buffers      128 8k;
@@ -74,19 +68,19 @@ http {
     proxy_ignore_client_abort on;
 
     upstream app_backend {
-        server localhost:5000 fail_timeout=0;
+        server localhost:{{ flask_default_port }} fail_timeout=0;
     }
 
     # VHost
     server {
-        # Defualt approved port for SELinux
-        listen      0.0.0.0:8008;
+        listen      0.0.0.0:80;
         server_name _;
 
-        location ~ ^/ {
+        location ~ ^/(.*html)? {
             proxy_pass http://app_backend;
         }
 
+        # Denying .htaccess
         location ~ ^/\.ht(.*)$ {
             deny all;
         }

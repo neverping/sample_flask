@@ -1,25 +1,11 @@
 ---
 # Setting up nginx
 
-- name: creating nginx home directory
-  file: path="{{ nginx_directory }}" state=directory owner=vagrant group=vagrant
-
-
-- name: Creating nginx pid directory
-  file: path=/var/run/nginx_polls state=directory owner=nobody group=root mode=0644
-
-
 - name: Setting up nginx config file
-  template: src=nginx.config.j2 dest="{{ nginx_directory }}/nginx.config" owner=vagrant group=vagrant
+  template: src=nginx.conf.j2 dest="/etc/nginx/nginx.conf" owner=root group=root
   notify:
   - reload nginx
 
 
-- name: Placing nginx systemd file
-  template: src=nginx_polls.systemd.j2 dest=/etc/systemd/system/nginx_polls.service owner=root group=root mode=0644
-  notify:
-  - reload nginx
-
-
-- name: Starting nginx
-  service: name=nginx_polls state=started enabled=yes
+- name: Making sure nginx is started and enabled
+  service: name=nginx.service state=started enabled=yes

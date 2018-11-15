@@ -13,7 +13,7 @@
 - name: systemd reload nginx
   listen: "reload nginx"
   systemd:
-    name: nginx_polls
+    name: nginx.service
     state: reloaded
     daemon_reload: yes
     enabled: yes
