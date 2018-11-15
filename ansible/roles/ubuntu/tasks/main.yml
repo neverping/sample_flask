@@ -2,12 +2,34 @@
 # These tasks install Ubuntu specific requirements.
 
 - name: Installing nginx
-  apt: name=nginx state=present update_cache=yes
+  apt: name=nginx state=present update_cache=yes cache_valid_time=3600
 
 
+- name: Installing MySQL Server
+  apt: name=mysql-server state=present
+  with_items:
+    - mysql-server
+
+- name: Installing packages required for ansible mysql modules
+  apt: name={{ item }} state=present
+  with_items:
+    - python3-dev
+    - libmysqlclient-dev
+  when: ansible_lsb.major_release|int >= 16
+
+
+- name: Installing Python package manager
+  apt: name=python3-pip state=present
+  when: ansible_lsb.major_release|int >= 16
+
+
+- name: Installing the Python package required for ansible MySQL modules
+  pip: name=mysqlclient
+  when: ansible_lsb.major_release|int >= 16
+
+
+# TODO: Test on Python3.
 - name: Installing essential Python packages
   apt: name={{ item }} state=present
   with_items:
     - python-virtualenv
-
-

@@ -1,0 +1,43 @@
+---
+# Setting up mysql
+
+- name: Start the MySQL service
+  service: name=mysql.service state=started enabled=yes
+
+
+# TODO: Do I need to this?
+- name: Update mysql root password
+  mysql_user: 
+    name: root 
+    host: "{{ item }}"
+    password: "{{ mysql_root_password }}"
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    check_implicit_admin: yes
+    priv: "*.*:ALL,GRANT"
+  with_items:
+    - "{{ ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+    - localhost 
+
+
+# TODO: Hashing passwords would be a plus!
+- name: Creating Vagrant user into MySQL.
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: vagrant
+    password: ze551ml
+    encrypted: no
+    priv: '*.*:ALL'
+    state: present
+
+- name: Creating the database for Flask
+  mysql_db:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: flask
+    encoding: utf8mb4
+    collation: utf8mb4_unicode_ci
+    state: present
