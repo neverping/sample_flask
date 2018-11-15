@@ -105,3 +105,6 @@ venv.bak/
 
 # Vagrant
 .vagrant/
+
+# Local database
+polls/data/app.db
