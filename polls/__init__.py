@@ -37,7 +37,6 @@ def create_app(test_config=None, debug_state=False):
     else:
         dburi = 'sqlite:///' + os.path.join(basedir, 'data/app.db')
 
-    print(dburi)
     app.config['SQLALCHEMY_DATABASE_URI'] = dburi
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ECHO'] = False
