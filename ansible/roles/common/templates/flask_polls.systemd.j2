@@ -1,5 +1,5 @@
 [Unit]
-Description=Flask - Ducks
+Description=Flask - Polls
 After=syslog.target network.target
 
 [Service]
@@ -9,6 +9,12 @@ Type=simple
 # 1- systemd does not accept 'export FOO=bar'
 # 2- Python does not have access to a instance var (example: FOO=bar)
 Environment="FLASK_ENV=vagrant"
+Environment="DB_TYPE=mysql"
+Environment="DB_HOST=localhost"
+Environment="DB_PORT=3306"
+Environment="DB_NAME={{ mysql_app_database }}"
+Environment="DB_USER={{ mysql_app_user }}"
+Environment="DB_PASS={{ mysql_app_password }}"
 GuessMainPID=True
 User=vagrant
 WorkingDirectory=/vagrant

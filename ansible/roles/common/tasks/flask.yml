@@ -18,6 +18,11 @@
   become: yes
   become_user: vagrant
 
+# NOTE: It is just a server dependency.
+# I didn't put this in the requirements.txt because this will requires the user
+# has the MySQL-devel package installed in his own machine and I don't want it for now.
+- name: Installing MySQL Python
+  command: "{{ virtualenv_directory }}/bin/pip install MySQL-python==1.2.3"
 
 - name: Starting flask
   service: name=flask_polls state=started enabled=yes

@@ -1,11 +1,11 @@
 ---
 # Setting up mysql
 
-- name: Start the MySQL service
+- name: Making sure MySQL Server is started and enabled
   service: name=mysql.service state=started enabled=yes
 
 
-- name: Update MySQL root password
+- name: Updating MySQL root password
   mysql_user: 
     name: root 
     host: "{{ item }}"

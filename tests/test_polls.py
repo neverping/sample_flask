@@ -1,12 +1,3 @@
-#The application must have three REST endpoints:
-#
-# 1- PUT /duck
-#     Adds 1 to the ducks counter
-# 2- DELETE /duck
-#     Deletes 1 from the ducks counter
-# 3- GET /duck
-#     Prints out the total number of ducks counted
-#
 from polls import create_app
 
 def test_config():

@@ -29,8 +29,13 @@
   when: ansible_lsb.major_release|int >= 16
 
 
-# TODO: Test on Python3.
+# NOTE: You cannot migrate into Python 3 because MySQL Python does not support it
 - name: Installing essential Python packages
   apt: name={{ item }} state=present
   with_items:
     - python-virtualenv
+    - python-dev
+    - python2.7-dev
+    - libpython-dev
+    - libpython2.7
+    - libpython2.7-dev
