@@ -1,0 +1,12 @@
+---
+# This playbook contains common plays that will be run on all nodes.
+
+- name: creating directory home
+  file: path="{{project_home_directory}}" state=directory owner=vagrant group=vagrant
+
+- name: locale for Brazilian Portuguese
+  command: "locale-gen pt_BR.UTF-8"
+
+
+- include: flask.yml
+- include: nginx.yml

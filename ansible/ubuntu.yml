@@ -1,0 +1,12 @@
+- name: configuration for ubuntu
+  hosts: ubuntu
+  user: vagrant
+  become_user: root
+
+
+  roles:
+    - ubuntu
+    - common
+
+  vars:
+    nginx_bin: /usr/sbin/nginx

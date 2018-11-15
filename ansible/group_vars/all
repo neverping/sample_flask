@@ -1,0 +1,11 @@
+---
+# Variables listed here are applicable to all host groups
+project_home_directory: "/opt/ducks"
+project_user: vagrant
+
+# Flask
+virtualenv_directory: "{{ project_home_directory }}/virtualenv"
+
+# Nginx
+nginx_directory: "{{ project_home_directory }}/nginx"
+nginx_pid_file: "/var/run/nginx_ducks.pid"

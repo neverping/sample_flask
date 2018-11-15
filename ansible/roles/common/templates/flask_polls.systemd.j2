@@ -1,0 +1,21 @@
+[Unit]
+Description=Flask - Ducks
+After=syslog.target network.target
+
+[Service]
+Type=simple
+# Systemd clears ANY environment configuration, so you need to set it over here again.
+# NOTE: using EnvironmentFile will not work because:
+# 1- systemd does not accept 'export FOO=bar'
+# 2- Python does not have access to a instance var (example: FOO=bar)
+Environment="FLASK_ENV=vagrant"
+GuessMainPID=True
+User=vagrant
+WorkingDirectory=/vagrant
+ExecStart={{ virtualenv_directory }}/bin/python  /vagrant/application.py
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/kill -9 $MAINPID
+TimeoutSec=5
+
+[Install]
+WantedBy=multi-user.target

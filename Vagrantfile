@@ -46,17 +46,16 @@ Vagrant.configure("2") do |config|
     ubuntu.vm.hostname = "ubuntu"
     ubuntu.vm.network :private_network, ip: "192.168.123.101"
 
-    # Will uncomment after my flask app becomes available.
-    #ubuntu.vm.provision "ansible" do |ansible|
-    #  ansible.playbook = "ansible/ubuntu.yml"
-    #  ansible.become = true
-    #  ansible.become_user = "root"
-    #  ansible.compatibility_mode = "2.0"
-    #  # Ubuntu 18.04 LTS (Bionic Beaver) no longer has Python 2 installed.
-    #  # Ubuntu 16.04 LTS (Xenial Xerus) has both Python 2 and 3.
-    #  # Therefore, preparing for the future here.
-    #  ansible.extra_vars = { ansible_python_interpreter: "/usr/bin/python3" }
-    #end
+    ubuntu.vm.provision "ansible" do |ansible|
+      ansible.playbook = "ansible/ubuntu.yml"
+      ansible.become = true
+      ansible.become_user = "root"
+      ansible.compatibility_mode = "2.0"
+      # Ubuntu 18.04 LTS (Bionic Beaver) no longer has Python 2 installed.
+      # Ubuntu 16.04 LTS (Xenial Xerus) has both Python 2 and 3.
+      # Therefore, preparing for the future here.
+      ansible.extra_vars = { ansible_python_interpreter: "/usr/bin/python3" }
+    end
 
   end
 

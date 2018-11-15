@@ -1,0 +1,22 @@
+[Unit]
+Description=nginx - Ducks
+After=syslog.target network.target
+
+[Service]
+Type=forking
+PIDFile={{ nginx_pid_file }}
+User=root
+WorkingDirectory=/vagrant/polls
+# nginx fails to self testing when using a a nologin account such as nobody.
+# for now, when testing, do it manually.
+#ExecStartPre={{ nginx_bin }} -c {{ nginx_directory }}/nginx.config -t
+ExecStart={{ nginx_bin }} -c {{ nginx_directory }}/nginx.config
+ExecReload={{ nginx_bin }} -c {{ nginx_directory }}/nginx.config -s reload
+ExecStop={{ nginx_bin }} -c {{ nginx_directory }}/nginx.config -s stop
+KillSignal=SIGQUIT
+TimeoutStopSec=5
+KillMode=process
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

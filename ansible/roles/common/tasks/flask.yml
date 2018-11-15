@@ -1,0 +1,23 @@
+---
+# Setting up flask
+
+- name: Placing flask systemd init file
+  template: src=flask_polls.systemd.j2 dest=/etc/systemd/system/flask_polls.service owner=root group=root mode=0644
+  notify:
+  - restart flask
+
+
+- name: Creating virtualenv
+  command: virtualenv --unzip-setuptools --no-site-packages "{{ virtualenv_directory }}" creates="{{ virtualenv_directory }}"
+  become: yes
+  become_user: vagrant
+
+
+- name: Running pip install
+  command: "{{ virtualenv_directory }}/bin/pip install -r /vagrant/requirements.txt"
+  become: yes
+  become_user: vagrant
+
+
+- name: Starting flask
+  service: name=flask_polls state=started enabled=yes
