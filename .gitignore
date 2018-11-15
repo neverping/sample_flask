@@ -108,3 +108,4 @@ venv.bak/
 
 # Local database
 polls/data/app.db
+polls/data/testing.db

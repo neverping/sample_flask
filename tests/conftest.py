@@ -2,7 +2,7 @@ import os
 import tempfile
 
 import pytest
-from ducks import create_app
+from polls import create_app
 
 @pytest.fixture
 def app():
@@ -21,4 +21,3 @@ def client(app):
 @pytest.fixture
 def runner(app):
     return app.test_cli_runner()
-

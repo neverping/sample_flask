@@ -29,13 +29,24 @@ def create_app(test_config=None, debug_state=False):
     dbpass  = os.environ.get('DB_PASS', '')
     dbtype  = os.environ.get('DB_TYPE', '')
 
+    # Passed by pytest
+    if test_config:
+        app.config.update(test_config)
+
+    if app.config['TESTING']:
+        local_sql_db = os.path.join(basedir, 'data/testing.db')
+        if os.path.exists(local_sql_db):
+            os.remove(local_sql_db)
+    else:
+        local_sql_db = os.path.join(basedir, 'data/app.db')
+
     # TODO: it can be improved
     if dbtype == 'mysql':
         dburi  = dbtype + '://' + dbuser + ':' + dbpass + '@' + dbhost + ':' + dbport + '/' + dbname
     elif dbtype == 'postgresql':
         dburi  = dbtype + '://' + dbuser + ':' + dbpass + '@' + dbhost + ':' + dbport + '/' + dbname
     else:
-        dburi = 'sqlite:///' + os.path.join(basedir, 'data/app.db')
+        dburi = 'sqlite:///' + local_sql_db
 
     app.config['SQLALCHEMY_DATABASE_URI'] = dburi
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -116,13 +127,18 @@ def create_app(test_config=None, debug_state=False):
     def not_found(error):
         return 'Unfortunately, not found!'
 
-    @app.route('/')
+    @app.route('/', methods=['GET', 'OPTIONS', 'HEAD'])
 
-    @app.route('/index.html')
+    @app.route('/index.html', methods=['GET', 'OPTIONS', 'HEAD'])
     def index():
-        return render_template('index.html', hostname=hostname, poll=poll)
+        if request.method == 'GET':
+            return render_template('index.html', hostname=hostname, poll=poll)
+        else:
+            # To deny OPTIONS and HEAD, you must allow it at the app.route
+            # and then block them from here.
+            return 'Method now allowed!\n', 405
 
-    @app.route('/vote.html', methods=['POST','GET'])
+    @app.route('/vote.html', methods=['GET', 'POST', 'OPTIONS', 'HEAD'])
     def vote():
         if request.method == 'POST':
             vote = request.form['vote']
@@ -131,14 +147,23 @@ def create_app(test_config=None, debug_state=False):
             db.session.commit()
             return redirect(url_for('results'), code=302)
 
+        if request.method not in ['GET', 'POST']:
+            # To deny OPTIONS and HEAD, you must allow it at the app.route
+            # and then block them from here.
+            return 'Method now allowed!\n', 405
+
         options = Option.query.filter_by(poll_id=poll.id).all()
         resp = make_response(render_template('vote.html', hostname=hostname, poll=poll, options=options))
-
         return resp
 
-    @app.route('/results.html')
+    @app.route('/results.html', methods=['GET', 'OPTIONS', 'HEAD'])
     def results():
-        results = Option.query.filter_by(poll_id=poll.id).all()
-        return render_template('results.html', hostname=hostname, poll=poll, results=results)
+        if request.method == 'GET':
+            results = Option.query.filter_by(poll_id=poll.id).all()
+            return render_template('results.html', hostname=hostname, poll=poll, results=results)
+        else:
+            # To deny OPTIONS and HEAD, you must allow it at the app.route
+            # and then block them from here.
+            return 'Method now allowed!\n', 405
 
     return app
