@@ -1,7 +1,7 @@
 ---
 # Handler to handle restart notifications
 
-- name: systemd restart flask
+- name: Systemd restart flask
   listen: "restart flask"
   systemd:
     name: flask_polls
@@ -10,7 +10,7 @@
     enabled: yes
 
 
-- name: systemd reload nginx
+- name: Systemd reload nginx
   listen: "reload nginx"
   systemd:
     name: nginx.service
