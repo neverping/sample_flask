@@ -43,7 +43,7 @@ Vagrant.configure("2") do |config|
     #
     # https://github.com/hashicorp/vagrant/issues/9134
     ubuntu.vm.box = "ubuntu/xenial64"
-    ubuntu.vm.hostname = "ubuntu"
+    ubuntu.vm.hostname = "ubuntu-xenial"
     ubuntu.vm.network :private_network, ip: "192.168.123.101"
 
     ubuntu.vm.provision "ansible" do |ansible|
