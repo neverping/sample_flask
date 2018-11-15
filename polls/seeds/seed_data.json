@@ -1,0 +1,8 @@
+{
+ "poll": "Best Linux Distribution",
+ "question": "Which is the best Linux Distribution?",
+ "options": [ "Ubuntu",
+              "Red Hat Enterprise Linux",
+              "Arch Linux"
+            ]
+}

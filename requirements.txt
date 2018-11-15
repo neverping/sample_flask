@@ -1,0 +1,14 @@
+# Needed packages for Flask.
+# For any development packages, please refer to dev_requirements.txt
+click==6.7
+Flask==1.0.2
+Flask-Admin==1.4.2
+Flask-Cors==3.0.2
+Flask-Migrate==2.0.0
+Flask-MySQL==1.4.0
+Flask-Script==2.0.5
+Flask-SQLAlchemy==2.1
+itsdangerous==0.24
+Jinja2==2.10
+MarkupSafe==1.0
+Werkzeug==0.14.1
