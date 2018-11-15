@@ -25,3 +25,5 @@ six==1.11.0
 wrapt==1.10.11
 # Ansible for setting up vagrant.
 ansible==2.6.4
+# AWS EB Client
+awsebcli
