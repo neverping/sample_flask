@@ -40,6 +40,36 @@ def test_it_is_a_fair_voting_system(client):
     assert r.status_code == 200
 
 
+def test_it_will_cast_a_vote_for_rhel(client):
+    """Red Hat Linux is the chosen one"""
+    p = client.post('/vote.html', data={'vote': 2, 'Vote': 'Vote'})
+    assert p.status_code == 302
+    assert p.location == 'http://localhost/results.html'
+    p.close()
+    # TODO: Better validation.
+    # After sitting for hours, this test cannot POST and GET
+    # the results in the same function, as the database connection will
+    # be closed or terminated somehow.
+    #
+    # The other possibility is create another function. However, at
+    # each test function, pytest will recreate our test database, so
+    # we cannot rely on this.
+    #
+    # I've checked the official Flask examples to verify how they
+    # were doing the post validation. It seems they were querying the
+    # database directly rather than doing another check.
+    # See: https://github.com/pallets/flask/blob/master/examples/tutorial/tests/test_blog.py
+    #
+    # For now on, I will do a direct SQL calls to assert the vote.
+    from sqlite3 import connect
+    from os import getcwd
+    database_file = getcwd() + '/polls/data/testing.db'
+    database = connect(database_file)
+    db_client = database.cursor()
+    query_response = db_client.execute("select votes from option where id == 2").fetchone()
+    assert query_response[0] == 1
+
+
 def test_it_should_not_accept_other_http_methods(client):
     """For security reasons: At first deny, and then allow when needed"""
     for uri in ['/', '/vote.html', '/results.html']:
