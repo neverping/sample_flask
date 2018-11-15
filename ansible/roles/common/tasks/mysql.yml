@@ -5,8 +5,7 @@
   service: name=mysql.service state=started enabled=yes
 
 
-# TODO: Do I need to this?
-- name: Update mysql root password
+- name: Update MySQL root password
   mysql_user: 
     name: root 
     host: "{{ item }}"
@@ -23,21 +22,22 @@
 
 
 # TODO: Hashing passwords would be a plus!
-- name: Creating Vagrant user into MySQL.
+- name: Creating regular user into MySQL.
   mysql_user:
     login_user: root
     login_password: "{{ mysql_root_password }}"
-    name: vagrant
-    password: ze551ml
+    name: "{{ mysql_app_user }}"
+    password: "{{ mysql_app_password }}"
     encrypted: no
     priv: '*.*:ALL'
     state: present
+
 
 - name: Creating the database for Flask
   mysql_db:
     login_user: root
     login_password: "{{ mysql_root_password }}"
-    name: flask
-    encoding: utf8mb4
-    collation: utf8mb4_unicode_ci
+    name: "{{ mysql_app_database }}"
+    encoding: "{{ mysql_app_charset }}"
+    collation: "{{ mysql_app_collation }}"
     state: present

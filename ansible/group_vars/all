@@ -14,3 +14,8 @@ nginx_log_dir: /var/log/nginx
 
 # MySQL
 mysql_root_password: vagrant
+mysql_app_user: u_flask
+mysql_app_password: ze551ml
+mysql_app_database: flask
+mysql_app_charset: utf8mb4
+mysql_app_collation: utf8mb4_unicode_ci
