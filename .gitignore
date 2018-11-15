@@ -109,3 +109,8 @@ venv.bak/
 # Local database
 polls/data/app.db
 polls/data/testing.db
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
