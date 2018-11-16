@@ -26,8 +26,8 @@ node {
 		
 		stage('Virtualenv-Setup-And-Update') {
 			echo "Virtualenv Setup And Update Started"
-			sh "if test -d test; then virtualenv --unzip-setuptools --no-site-packages test; fi"
-			sh "if test -d test; then virtualenv --unzip-setuptools --no-site-packages test; fi"
+			sh "if test ! -d test; then virtualenv --unzip-setuptools --no-site-packages test; fi"
+			sh "if test -d test; then test/bin/pip install -r dev_requirements.txt; fi"
 			echo "Virtualenv Setup And Update Finished"
 		}
 
