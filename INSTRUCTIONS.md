@@ -213,6 +213,6 @@ PLAY RECAP *********************************************************************
 ubuntu                     : ok=22   changed=19   unreachable=0    failed=0   
 ```
 
-And we see the setup is completed. After that, you can open the browser to the following address to test the app: `http://192.168.123.101/
+And we see the setup is completed. After that, you can open the browser to the following address to test the app: `http://192.168.123.101/`
 
 To stop the virtual machine, type `vagrant stop`. To remove the virtual machine from your computer and save hard drive space, `vagrant destroy`.
