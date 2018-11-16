@@ -50,13 +50,47 @@ $ pip install -r dev_requirements.txt
 
 The project is covered by pytest suite, and you can run it to check whether if the project is working properly or needs fixes as you keep adding features in the code.
 
-### Running tests:
+### Running tests
 
 After you installed the required packages, you can invoke the tests as follows:
 
 ```bash
 $ pytest -v
 ```
+
+### Running tests over Jenkins
+
+There is an initial Jenkins support, which only will download the source code from github, build it and test it.
+
+This Jenkinsfile will require the following components installed previously in your Jenkins Master or Agent 
+
+- Python 2.7
+- Virtualenv
+
+Those packages will be the same we need to run locally.
+
+And here are the steps required to run in Jenkins:
+
+1. Log in into your Jenkins Master;
+2. At the main dashboard, on the right menu click on 'New Item';
+3. At the 'Enter an item name', choose a meaninful name for this task. Suggestion: `python-test-sample-flask`. For this task, select 'Pipeline' as the task type. Click on the 'Ok' floating button;
+4. You will see a screen with a lot of options. Let's check which one we could modify:
+    1. **Description**: Fill with `Sample Flask pipeline`;
+    2. **Discard old builds**: Mark it. A subitem will appear and then we fill;
+    3. **Strategy**: Log Rotation;
+    4. **Days to keep**: 1 (this won't produce any artifact we will need in the future as in Java projects);
+    5. **Max # of builds to keep**: 1; (again, we won't produce any artifact);
+    6. **Github Project**: Fill with this github repository. Keep in mind this MUST BE THE READ-ONLY URL (the one which starts with `https://` and ends with `.git`);
+5. Scrolling down, you will see a large title called `Pipeline`. This will lead us to more sub-options:
+    1. **Definition**: Click and select `Pipeline script from SCM`
+    2. **SCM**: Click and select `Pipeline script from SCM`
+    2. **Repositories** and **Repository URL**: The same repository we used on the steps before;
+    2. **Credentials**: None (because public URLs does not require authentication);
+6. Click on `Save` button after it appears (it will appear seconds after you fill Repository URL with a valid repository);
+7. After the save button, click on `Build Now`;
+8. When you click `build now`, Jenkins Master will dispatch the job to the first available Agent. On a single node installation, this will be the own Jenkins Master and you will see a "#1" flashing at the botton left of the screen. Click on it;
+8. You will see a flashing ball. This means that Jenkins is building the job and you can click in `Console output` what Jenkins is doing;
+9. After Jenkins build this Job, you can click on the Jenkins logo at the top left and head back to the dashboard, where you can see your newly job created and built. If you see a 'sun', the job was built successfully. If there's cloud, one the job stages has failed and you should check wether this was caused by some Jenkins misconfiguration or by this repository.
 
 ### Running the project locally:
 
