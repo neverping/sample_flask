@@ -24,12 +24,6 @@ node {
 
 		}
 		
-                stage('Package-Setup') {
-                        echo "Setup Stage Starting"
-                        sh "sudo apt-get install python-virtualenv python-dev python2.7-dev libpython-dev libpython2.7 libpython2.7-dev -y"
-                        echo "Setup Stage Finsihed"
-                }
-
 		stage('Virtualenv-Setup-And-Update') {
 			echo "Virtualenv Setup And Update Started"
 			sh "if test -d test; then virtualenv --unzip-setuptools --no-site-packages test; fi"
